@@ -15,25 +15,25 @@ interface Note {
 
 interface NoteContextValue {
   note: Note[],
-  setNote: (note: string) => void
+  addNote: (note: string) => void
 }
 
 const contextDefault = {
   note: [],
-  setNote: () => {}
+  addNote: () => {}
 }
 
 const NoteContext = createContext<NoteContextValue>(contextDefault)
 
 export const NoteProvider: React.FC<ContextProps> = ({children}) => {
-  const [note, settingNote] = useState<Note []>([])
+  const [note, setNote] = useState<Note []>([])
 
-  const setNote = useCallback(text => {
+  const addNote = useCallback(text => {
     const newNote = [...note, {id: idGen(), text}]
-    settingNote(newNote)
+    setNote(newNote)
   }, [note])
 
-  const value = useMemo(() => ({note, setNote: setNote}), [note, setNote])
+  const value = useMemo(() => ({note, addNote}), [note, addNote])
 
   return (
     <NoteContext.Provider value={value}>{children}</NoteContext.Provider>
