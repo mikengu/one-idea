@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
 import {Center} from '../components'
-import {StackNavigationProp} from '@react-navigation/stack'
-import {RouteParamList} from '../routes/RoutesParamList'
 import {useUserStore} from '../store/userStore'
 import {
   View,
@@ -13,15 +11,7 @@ import {
 
 } from 'react-native'
 
-interface LoginProps {
-
-}
-
-interface LoginNavigation {
-    navigation: StackNavigationProp<RouteParamList, 'Login'>
-}
-
-const Login = ({navigation}: LoginNavigation) => {
+const Login: React.FC = () => {
   const [input, setInput] = useState<string>('')
   const {setUser} = useUserStore()
   const windowWidth = useWindowDimensions().width / 2
@@ -37,7 +27,6 @@ const Login = ({navigation}: LoginNavigation) => {
           <Button
             onPress={() => {
               setUser(input)
-              navigation.navigate('Home')
             }}
             title={'Login'}
           />

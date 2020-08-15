@@ -6,7 +6,7 @@ interface IconProps {
     name: string,
     size?: number,
     style?: {},
-    onPress: () => void
+    onPress?: () => void
 }
 
 export const Icon: React.FC<IconProps> = ({icon, name, onPress, size, style}) => {
