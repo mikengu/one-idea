@@ -9,18 +9,21 @@ interface ContextProps {
 }
 
 interface Note {
-  id: string;
-  text: string;
+  id: string
+  text: string
+  favorite: boolean
 }
 
 interface NoteContextValue {
-  note: Note[],
+  note: Note[]
   addNote: (note: string) => void
+  toggleFavorite: (id: string) => void
 }
 
 const contextDefault = {
   note: [],
-  addNote: () => {}
+  addNote: () => {},
+  toggleFavorite: () => {}
 }
 
 const NoteContext = createContext<NoteContextValue>(contextDefault)
@@ -29,11 +32,16 @@ export const NoteProvider: React.FC<ContextProps> = ({children}) => {
   const [note, setNote] = useState<Note []>([])
 
   const addNote = useCallback(text => {
-    const newNote = [...note, {id: idGen(), text}]
+    const newNote = [...note, {id: idGen(), text, favorite: false}]
     setNote(newNote)
   }, [note])
 
-  const value = useMemo(() => ({note, addNote}), [note, addNote])
+  const toggleFavorite = useCallback(id => {
+    const editedNote = note.map(obj => obj.id === id ? {...obj, favorite: !obj.favorite} : obj)
+    setNote(editedNote)
+  }, [note])
+
+  const value = useMemo(() => ({note, addNote, toggleFavorite}), [note, addNote, toggleFavorite])
 
   return (
     <NoteContext.Provider value={value}>{children}</NoteContext.Provider>
